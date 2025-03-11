@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hood River Middle School Menu - 7th Grade</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+    }
+    
+    body {
+      background-color: #f8f9fa;
+      color: #333;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      background-color: #4b6b75;
+      color: white;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+      border-radius: 0 0 15px 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .logo {
+      width: 70px;
+      height: 70px;
+      margin-right: 20px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    
+    h1 {
+      font-size: 28px;
+      font-weight: 600;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+    
+    .current-info {
+      background-color: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      border-left: 5px solid #4b6b75;
+    }
+    
+    .time-display {
+      font-weight: 600;
+      color: #4b6b75;
+      margin-left: 5px;
+    }
+    
+    .info-row {
+      display: flex;
+      margin-bottom: 10px;
+      align-items: center;
+    }
+    
+    .info-label {
+      width: 120px;
+      font-weight: 500;
+    }
+    
+    .menu-section {
+      background-color: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+      margin-bottom: 25px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .menu-section:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    }
+    
+    .section-header {
+      background-color: #4b6b75;
+      color: white;
+      padding: 15px 20px;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    
+    .menu-links {
+      padding: 10px 0;
+    }
+    
+    .menu-item {
+      display: flex;
+      align-items: center;
+      padding: 14px 20px;
+      border-bottom: 1px solid #f0f0f0;
+      color: #444;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    
+    .menu-item:last-child {
+      border-bottom: none;
+    }
+    
+    .menu-item:hover {
+      background-color: #f5f8fa;
+      padding-left: 25px;
+    }
+    
+    .menu-item:before {
+      content: "➤";
+      margin-right: 10px;
+      font-size: 12px;
+      color: #4b6b75;
+      opacity: 0.7;
+    }
+    
+    .current-period {
+      background-color: #e6f7ff;
+      border-left: 5px solid #0078d7;
+      font-weight: 600;
+    }
+    
+    .current-period:before {
+      opacity: 1;
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    footer {
+      text-align: center;
+      margin-top: 30px;
+      padding: 20px;
+      color: #777;
+      font-size: 14px;
+      border-top: 1px solid #eee;
+    }
+    
+    .tabs {
+      display: flex;
+      margin-bottom: 25px;
+      background: white;
+      border-radius: 50px;
+      padding: 5px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    }
+    
+    .tab {
+      padding: 12px 25px;
+      background-color: transparent;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      flex: 1;
+      text-align: center;
+      transition: all 0.3s;
+      color: #555;
+    }
+    
+    .tab.active {
+      background-color: #4b6b75;
+      color: white;
+      box-shadow: 0 3px 8px rgba(75,107,117,0.4);
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.5s;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .schedule-info {
+      background-color: #f0f7ff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border-left: 4px solid #4b6b75;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .schedule-info:before {
+      content: "ℹ️";
+      margin-right: 10px;
+      font-size: 18px;
+    }
+    
+    /* Responsive design improvements */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        text-align: center;
+        padding: 15px;
+      }
+      
+      .logo {
+        margin-right: 0;
+        margin-bottom: 15px;
+      }
+      
+      h1 {
+        font-size: 22px;
+      }
+      
+      .tab {
+        padding: 10px 15px;
+        font-size: 14px;
+      }
+    }
+
+    /* Additional style for period links */
+    .day-option {
+      margin-left: 8px;
+      color: #4b6b75;
+      font-weight: 500;
+      text-decoration: none;
+    }
+    
+    .day-option:hover {
+      text-decoration: underline;
+    }
+    
+    .day-separator {
+      margin: 0 5px;
+      color: #ccc;
+    }
+    
+    /* Change button styles */
+    .change-button {
+      background-color: #4b6b75;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 5px 12px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: all 0.2s;
+    }
+    
+    .change-button:hover {
+      background-color: #3a545c;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    /* Dropdown styles */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      background-color: white;
+      min-width: 180px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+      border-radius: 8px;
+      z-index: 1;
+      overflow: hidden;
+      animation: fadeIn 0.2s;
+    }
+    
+    .dropdown-content.show {
+      display: block;
+    }
+    
+    .dropdown-option {
+      color: #333;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      transition: all 0.2s;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .dropdown-option:last-child {
+      border-bottom: none;
+    }
+    
+    .dropdown-option:hover {
+      background-color: #f5f8fa;
+    }
+    
+    .dropdown-option.selected {
+      background-color: #e6f7ff;
+      font-weight: 600;
+      color: #4b6b75;
+    }
+    
+    .dropdown-option:before {
+      content: "•";
+      margin-right: 8px;
+      color: #4b6b75;
+    }
+    
+    .dropdown-option.selected:before {
+      content: "✓";
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="https://raw.githubusercontent.com/Somebody437/School-menu/refs/heads/main/IMG_1977.jpeg" alt="HRMS Logo" class="logo">
+    <h1>Hood River Middle School Menu - 7th Grade</h1>
+  </header>
+  
+  <div class="container">
+    <div class="current-info">
+      <div class="info-row">
+        <div class="info-label">Current Time:</div>
+        <div><span id="current-time" class="time-display">Loading...</span></div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Current Day:</div>
+        <div><span id="current-day" class="time-display">Loading...</span></div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Current Period:</div>
+        <div><span id="current-period" class="time-display">Loading...</span></div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Schedule Type:</div>
+        <div>
+          <span id="schedule-type" class="time-display">Regular</span>
+          <div class="dropdown">
+            <button class="change-button" onclick="toggleDropdown()">Change</button>
+            <div id="scheduleDropdown" class="dropdown-content">
+              <a href="#" class="dropdown-option selected" data-type="regular" onclick="changeSchedule('regular', event)">Regular</a>
+              <a href="#" class="dropdown-option" data-type="onehour" onclick="changeSchedule('onehour', event)">One-Hour Delay</a>
+              <a href="#" class="dropdown-option" data-type="twohour" onclick="changeSchedule('twohour', event)">Two-Hour Delay</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="tabs">
+      <button class="tab active" onclick="openTab('current')">
+        <span id="current-tab-text">Current Class</span>
+      </button>
+      <button class="tab" onclick="openTab('all')">All Classes</button>
+    </div>
+    
+    <!-- Current Class Tab -->
+    <div id="current" class="tab-content active">
+      <div class="menu-section">
+        <div class="section-header" id="current-header">Current Class</div>
+        <div class="menu-links">
+          <a href="#" id="current-class-link" class="menu-item">Loading Current Class...</a>
+          <!-- Single ORVED link that appears during 4th period -->
+          <a href="https://orved.geniussis.com/FEDashboard.aspx" target="_blank" class="menu-item hidden" id="orved-link">ORVED Dashboard</a>
+          <a href="https://docs.google.com/document/d/1A41ZLiyWYqCaTiIiIwpa6Hn3BkDAumdA7BwQx9ahROE/view" target="_blank" class="menu-item hidden" id="proof-resources">Proof Resources</a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- All Classes Tab -->
+    <div id="all" class="tab-content">
+      <div class="menu-section">
+        <div class="section-header">Common Links</div>
+        <div class="menu-links">
+          <a href="https://classroom.google.com" target="_blank" class="menu-item">Google Classroom Home</a>
+          <a href="https://esp41pwhac.eschoolplus.powerschool.com/HomeAccess/Account/LogOn" target="_blank" class="menu-item">HAC (Grade Portal)</a>
+        </div>
+      </div>
+      
+      <div class="menu-section">
+        <div class="section-header">All Classes</div>
+        <div class="menu-links">
+          <a href="https://classroom.google.com/w/Njg1MTQzNDE3ODYz/t/all" target="_blank" class="menu-item" id="period1">1st Period</a>
+          <!-- Modified 2nd period with A/B day options -->
+          <div class="menu-item" id="period2">
+            2nd Period:
+            <a href="https://classroom.google.com/w/<placeholder>/t/all" target="_blank" class="day-option">A Day</a>
+            <span class="day-separator">|</span>
+            <a href="https://classroom.google.com/w/NzU4MTUyMzIxMDcx/t/all" target="_blank" class="day-option">B Day</a>
+          </div>
+          <a href="https://classroom.google.com/w/Njg1MTQzNDk0OTQ4/t/all" target="_blank" class="menu-item" id="period3">3rd Period</a>
+          <a href="https://orved.geniussis.com/FEDashboard.aspx" target="_blank" class="menu-item" id="period4">4th Period (ORVED)</a>
+          <a href="https://classroom.google.com/w/Njg1MTQzMzE2NjAz/t/all" target="_blank" class="menu-item" id="period5">5th Period</a>
+          <a href="https://classroom.google.com/w/Njg1MTQzNTY2NDIz/t/all" target="_blank" class="menu-item" id="period6">6th Period</a>
+          <a href="https://classroom.google.com/w/Njg1MTQzNTQ3MzIx/t/all" target="_blank" class="menu-item" id="period7">7th Period/Advisory</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    Hood River Middle School • 1602 May Street • Hood River, OR 97031
+  </footer>
+
+  <script>
+    // Tab functionality
+    function openTab(tabName) {
+      const tabs = document.getElementsByClassName("tab");
+      const tabContents = document.getElementsByClassName("tab-content");
+      
+      // Hide all tab contents
+      for (let i = 0; i < tabContents.length; i++) {
+        tabContents[i].classList.remove("active");
+      }
+      
+      // Remove active class from all tabs
+      for (let i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove("active");
+      }
+      
+      // Show the selected tab content
+      document.getElementById(tabName).classList.add("active");
+      
+      // Add active class to the clicked tab
+      event.currentTarget.classList.add("active");
+    }
+    
+    // Store the current schedule type
+    let currentScheduleType = "regular";
+    
+    // Toggle the dropdown
+    function toggleDropdown() {
+      document.getElementById("scheduleDropdown").classList.toggle("show");
+      
+      // Close the dropdown when clicking outside of it
+      window.onclick = function(event) {
+        if (!event.target.matches('.change-button')) {
+          const dropdowns = document.getElementsByClassName("dropdown-content");
+          for (let i = 0; i < dropdowns.length; i++) {
+            const openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+              openDropdown.classList.remove('show');
+            }
+          }
+        }
+      }
+    }
+    
+    // Change schedule type
+    function changeSchedule(type, event) {
+      event.preventDefault();
+      
+      // Update the current schedule type
+      currentScheduleType = type;
+      
+      // Update the displayed schedule type
+      let displayText = "Regular";
+      if (type === "onehour") displayText = "One-Hour Delay";
+      if (type === "twohour") displayText = "Two-Hour Delay";
+      
+      document.getElementById('schedule-type').textContent = displayText;
+      
+      // Update selected state in dropdown
+      const options = document.querySelectorAll('.dropdown-option');
+      options.forEach(option => {
+        option.classList.remove('selected');
+      });
+      
+      event.target.classList.add('selected');
+      
+      // Hide dropdown
+      document.getElementById("scheduleDropdown").classList.remove("show");
+      
+      // Update current period
+      updateCurrentPeriod();
+    }
+  
+    // Function to determine the current period based on time and day
+    function getCurrentPeriod() {
+      const now = new Date();
+      const day = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const time = hours * 60 + minutes; // Convert to minutes for easier comparison
+      
+      // Format for displaying current time
+      document.getElementById('current-time').textContent = 
+        `${hours > 12 ? hours - 12 : hours === 0 ? 12 : hours}:${minutes < 10 ? '0' + minutes : minutes} ${hours >= 12 ? 'PM' : 'AM'}`;
+      
+      // Display day of week
+      const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      document.getElementById('current-day').textContent = days[day];
+      
+      // Not school hours
+      if (day === 0 || day === 6 || time < 8 * 60 + 35 || time > 15 * 60 + 25) {
+        return "Not School Hours";
+      }
+      
+      // Two-Hour Delay
+      if (currentScheduleType === "twohour") {
+        // 7th grade column from Two-Hour Delay schedule
+        if (time >= 10 * 60 + 35 && time < 11 * 60 + 22) return "1";
+        if (time >= 11 * 60 + 27 && time < 12 * 60 + 04) return "2";
+        if (time >= 12 * 60 + 05 && time < 12 * 60 + 21) return "Lunch";
+        if (time >= 12 * 60 + 22 && time < 12 * 60 + 38) return "Recess";
+        if (time >= 12 * 60 + 43 && time < 13 * 60 + 19) return "3";
+        if (time >= 13 * 60 + 24 && time < 14 * 60 + 01) return "4";
+        if (time >= 14 * 60 + 06 && time < 14 * 60 + 43) return "5";
+        if (time >= 14 * 60 + 48 && time < 15 * 60 + 30) return "6";
+      }
+      // One-Hour Delay
+      else if (currentScheduleType === "onehour") {
+        // 7th grade column from One-Hour Delay schedule
+        if (time >= 9 * 60 + 35 && time < 10 * 60 + 25) return "1";
+        if (time >= 10 * 60 + 30 && time < 11 * 60 + 10) return "2";
+        if (time >= 11 * 60 + 15 && time < 11 * 60 + 55) return "3";
+        if (time >= 11 * 60 + 55 && time < 12 * 60 + 15) return "Lunch";
+        if (time >= 12 * 60 + 15 && time < 12 * 60 + 35) return "Recess";
+        if (time >= 12 * 60 + 40 && time < 13 * 60 + 20) return "4";
+        if (time >= 13 * 60 + 25 && time < 14 * 60 + 05) return "5";
+        if (time >= 14 * 60 + 10 && time < 15 * 60 + 30) return "6";
+      }
+      // Monday (Late Start) - Using the 7th grade column
+      else if (day === 1 && currentScheduleType === "regular") {
+        if (time >= 9 * 60 + 35 && time < 10 * 60 + 30) return "1";
+        if (time >= 10 * 60 + 35 && time < 11 * 60 + 20) return "2";
+        if (time >= 11 * 60 + 21 && time < 11 * 60 + 40) return "Lunch";
+        if (time >= 11 * 60 + 41 && time < 12 * 60 + 00) return "Recess";
+        if (time >= 12 * 60 + 05 && time < 12 * 60 + 50) return "3";
+        if (time >= 12 * 60 + 55 && time < 13 * 60 + 40) return "4";
+        if (time >= 13 * 60 + 45 && time < 14 * 60 + 30) return "5";
+        if (time >= 14 * 60 + 35 && time < 15 * 60 + 30) return "6";
+      }
+      // Tuesday through Friday - Using the 7th grade column
+      else if (day >= 2 && day <= 5 && currentScheduleType === "regular") {
+        if (time >= 8 * 60 + 45 && time < 9 * 60 + 36) return "1";
+        if (time >= 9 * 60 + 41 && time < 10 * 60 + 32) return "2";
+        if (time >= 10 * 60 + 37 && time < 11 * 60 + 28) return "3";
+        if (time >= 11 * 60 + 28 && time < 11 * 60 + 48) return "Lunch";
+        if (time >= 11 * 60 + 48 && time < 12 * 60 + 08) return "Recess";
+        if (time >= 12 * 60 + 13 && time < 13 * 60 + 04) return "4";
+        if (time >= 13 * 60 + 09 && time < 14 * 60 + 00) return "5";
+        if (time >= 14 * 60 + 05 && time < 14 * 60 + 56) return "6";
+        if (time >= 15 * 60 + 01 && time < 15 * 60 + 30) return "7";
+      }
+      
+      return "Between Classes";
+    }
+    
+    // Function to highlight the current period and update the current-class link
+    function updateCurrentPeriod() {
+      const period = getCurrentPeriod();
+      document.getElementById('current-period').textContent = period;
+      
+      // Reset all highlights
+      document.querySelectorAll('.menu-item').forEach(item => {
+        item.classList.remove('current-period');
+      });
+      
+      // Update the current tab text
+      let tabText = "Current: ";
+      
+      // Hide/show 4th period specific links
+      const orvedLink = document.getElementById('orved-link');
+      const proofResourcesLink = document.getElementById('proof-resources');
+      
+      if (period === "4") {
+        orvedLink.classList.remove('hidden');
+        proofResourcesLink.classList.remove('hidden');
+      } else {
+        orvedLink.classList.add('hidden');
+        proofResourcesLink.classList.add('hidden');
+      }
+      
+      // Set current class link and tab text
+      const currentClassLink = document.getElementById('current-class-link');
+      const currentHeader = document.getElementById('current-header');
+      
+      if (period === "1") {
+        document.getElementById('period1').classList.add('current-period');
+        currentClassLink.href = "https://classroom.google.com/w/Njg1MTQzNDE3ODYz/t/all";
+        currentClassLink.textContent = "1st Period Google Classroom";
+        tabText += "1st Period";
+        currentHeader.textContent = "1st Period";
+      } else if (period === "2") {
+        document.getElementById('period2').classList.add('current-period');
+        // Updated to show both A Day and B Day options
+        currentClassLink.innerHTML = '2nd Period: ' +
+          '<a href="https://classroom.google.com/w/<placeholder>/t/all" target="_blank" class="day-option">A Day</a>' +
+          '<span class="day-separator">|</span>' +
+          '<a href="https://classroom.google.com/w/NzU4MTUyMzIxMDcx/t/all" target="_blank" class="day-option">B Day</a>';
+        currentClassLink.removeAttribute('href');
+        tabText += "2nd Period";
+        currentHeader.textContent = "2nd Period";
+      } else if (period === "3") {
+        document.getElementById('period3').classList.add('current-period');
+        currentClassLink.href = "https://classroom.google.com/w/Njg1MTQzNDk0OTQ4/t/all";
+        currentClassLink.textContent = "3rd Period Google Classroom";
+        tabText += "3rd Period";
+        currentHeader.textContent = "3rd Period";
+      } else if (period === "4") {
+        document.getElementById('period4').classList.add('current-period');
+        currentClassLink.href = "https://orved.geniussis.com/FEDashboard.aspx";
+        currentClassLink.textContent = "ORVED Dashboard";
+        tabText += "4th Period";
+        currentHeader.textContent = "4th Period (ORVED)";
+      } else if (period === "5") {
+        document.getElementById('period5').classList.add('current-period');
+        currentClassLink.href = "https://classroom.google.com/w/Njg1MTQzMzE2NjAz/t/all";
+        currentClassLink.textContent = "5th Period Google Classroom";
+        tabText += "5th Period";
+        currentHeader.textContent = "5th Period";
+      } else if (period === "6") {
+        document.getElementById('period6').classList.add('current-period');
+        currentClassLink.href = "https://classroom.google.com/w/Njg1MTQzNTY2NDIz/t/all";
+        currentClassLink.textContent = "6th Period Google Classroom";
+        tabText += "6th Period";
+        currentHeader.textContent = "6th Period";
+      } else if (period === "7") {
+        document.getElementById('period7').classList.add('current-period');
+        currentClassLink.href = "https://classroom.google.com/w/Njg1MTQzNTQ3MzIx/t/all";
+        currentClassLink.textContent = "7th Period/Advisory Google Classroom";
+        tabText += "7th Period";
+        currentHeader.textContent = "7th Period/Advisory";
+      } else if (period === "Lunch" || period === "Recess") {
+        currentClassLink.href = "https://classroom.google.com";
+        currentClassLink.textContent = "Google Classroom Home";
+        tabText += period;
+        currentHeader.textContent = period;
+      } else {
+        currentClassLink.href = "https://classroom.google.com";
+        currentClassLink.textContent = "Google Classroom Home";
+        tabText = "Current: Not in Class";
+        currentHeader.textContent = "Not in Class";
+      }
+      
+      document.getElementById('current-tab-text').textContent = tabText;
+    }
+    
+    // Update the current period every minute
+    updateCurrentPeriod();
+    setInterval(updateCurrentPeriod, 60000);
+  </script>
+</body>
+</html>
